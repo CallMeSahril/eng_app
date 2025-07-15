@@ -1,5 +1,6 @@
 import 'package:eng_app/app/data/models/story_model.dart';
 import 'package:eng_app/app/data/services/story_service.dart';
+import 'package:eng_app/app/modules/dashboard/dashboard_controller.dart';
 import 'package:get/get.dart';
 
 class StoryController extends GetxController {

@@ -1,14 +1,14 @@
 import 'soal_model.dart';
 
 class QuizResponse {
-  final Soal soal;
+  final List<Soal> soalList;
   final int page;
   final int totalSoal;
   final int lives;
   final String status;
 
   QuizResponse({
-    required this.soal,
+    required this.soalList,
     required this.page,
     required this.totalSoal,
     required this.lives,
@@ -16,8 +16,11 @@ class QuizResponse {
   });
 
   factory QuizResponse.fromJson(Map<String, dynamic> json) {
+    final List<dynamic> soalJson = json['soal'];
+    final soalList = soalJson.map((e) => Soal.fromJson(e)).toList();
+
     return QuizResponse(
-      soal: Soal.fromJson(json),
+      soalList: soalList,
       page: json['page'],
       totalSoal: json['total_soal'],
       lives: json['lives'],

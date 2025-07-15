@@ -1,16 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:eng_app/app/data/services/user_preference.dart';
 import '../models/materi_model.dart';
 
 class MateriService {
   final Dio _dio = Dio();
   final String baseUrl =
-      'https://gg0l3mpr-5006.asse.devtunnels.ms/materi-progress/9';
+      'https://nngwj5fn-5006.asse.devtunnels.ms/materi-progress/';
 
   Future<List<MateriModel>> fetchMateri() async {
     print('Data materi berhasil dimuat: ${baseUrl} items');
-
+    final userId = await UserPreference.getUserId();
     try {
-      final response = await _dio.get(baseUrl);
+      final response = await _dio.get("${baseUrl}${userId}");
       print('Data materi berhasil dimuat: ${baseUrl} items');
 
       if (response.statusCode == 200) {

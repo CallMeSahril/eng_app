@@ -1,6 +1,8 @@
 import 'package:eng_app/app/modules/audio/audio_controller.dart';
 import 'package:eng_app/app/modules/auth/auth_controller.dart';
+import 'package:eng_app/app/modules/pengaturan/masukan_view.dart';
 import 'package:eng_app/app/modules/pengaturan/profil_pencapaian_view.dart';
+import 'package:eng_app/app/modules/pengaturan/pusat_bantuan_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
@@ -49,7 +51,7 @@ class _PengaturanViewState extends State<PengaturanView> {
 
   Future<void> fetchMusik() async {
     final response = await Dio().get(
-      'https://gg0l3mpr-5006.asse.devtunnels.ms/api/musik',
+      'https://nngwj5fn-5006.asse.devtunnels.ms/api/musik',
     );
     setState(() {
       musikList = response.data;
@@ -87,7 +89,7 @@ class _PengaturanViewState extends State<PengaturanView> {
               activeColor: Colors.redAccent,
             ),
           ),
-             ListTile(
+          ListTile(
             title: const Text("Musik Latar"),
             subtitle:
                 musikList.isEmpty
@@ -105,7 +107,8 @@ class _PengaturanViewState extends State<PengaturanView> {
                       onChanged: (value) {
                         if (value != null) saveSelectedMusik(value);
                       },
-                    ),),
+                    ),
+          ),
           ListTile(
             title: const Text("Profil dan Pencapain "),
             trailing: const Icon(
@@ -114,14 +117,14 @@ class _PengaturanViewState extends State<PengaturanView> {
             ),
             onTap: () => Get.to(ProfilPencapaianView()),
           ),
-          ListTile(
-            title: const Text("Ubah Password "),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black54,
-            ),
-            onTap: () {},
-          ),
+          // ListTile(
+          //   title: const Text("Ubah Password "),
+          //   trailing: const Icon(
+          //     Icons.arrow_forward_ios,
+          //     color: Colors.black54,
+          //   ),
+          //   onTap: () {},
+          // ),
           ListTile(
             title: const Text("Keluar Akun"),
             trailing: const Icon(
@@ -137,34 +140,40 @@ class _PengaturanViewState extends State<PengaturanView> {
               );
             },
           ),
-          ListTile(
-            title: const Text("Hapus Akun "),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black54,
-            ),
-            onTap: () {},
+          // ListTile(
+          //   title: const Text("Hapus Akun "),
+          //   trailing: const Icon(
+          //     Icons.arrow_forward_ios,
+          //     color: Colors.black54,
+          //   ),
+          //   onTap: () {},
+          // ),
+
+          // _sectionTitle("Preference"),
+          // ListTile(
+          //   title: const Text("Bahasa "),
+          //   trailing: const Icon(
+          //     Icons.arrow_forward_ios,
+          //     color: Colors.black54,
+          //   ),
+          //   onTap: () {},
+          // ),
+          // ListTile(
+          //   title: const Text("Pengaturan suara "),
+          //   trailing: const Icon(
+          //     Icons.arrow_forward_ios,
+          //     color: Colors.black54,
+          //   ),
+          //   onTap: () {},
+          // ),
+          GestureDetector(
+            child: _sectionTitle("Pusat bantuan"),
+            onTap: () => Get.to(const PusatBantuanView()),
           ),
-          _sectionTitle("Preference"),
-          ListTile(
-            title: const Text("Bahasa "),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black54,
-            ),
-            onTap: () {},
+          GestureDetector(
+            child: _sectionTitle("Masukan"),
+            onTap: () => Get.to(const MasukanView()),
           ),
-          ListTile(
-            title: const Text("Pengaturan suara "),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black54,
-            ),
-            onTap: () {},
-          ),
-        
-          _sectionTitle("Pusat bantuan"),
-          _sectionTitle("Masukan"),
         ],
       ),
     );

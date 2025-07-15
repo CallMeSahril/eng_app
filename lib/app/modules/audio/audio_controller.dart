@@ -45,7 +45,7 @@ Future<List<String>> fetchMusikNames() async {
   final dio = Dio();
   try {
     final response = await dio.get(
-      'https://gg0l3mpr-5006.asse.devtunnels.ms/api/musik/',
+      'https://nngwj5fn-5006.asse.devtunnels.ms/api/musik/',
     );
     List<dynamic> data = response.data;
     return data.map<String>((item) => item['nama'] as String).toList();

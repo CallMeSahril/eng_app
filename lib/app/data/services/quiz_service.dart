@@ -5,7 +5,7 @@ import '../models/quiz_response_model.dart';
 class QuizService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'https://gg0l3mpr-5006.asse.devtunnels.ms',
+      baseUrl: 'https://nngwj5fn-5006.asse.devtunnels.ms',
       headers: {'Accept': 'application/json'},
     ),
   );
@@ -16,7 +16,7 @@ class QuizService {
   }) async {
     try {
       final userId = await UserPreference.getUserId();
-print(levelId);
+      print(levelId);
       final response = await _dio.get(
         '/api/soal/$levelId',
         queryParameters: {'user_id': userId, 'page': page},

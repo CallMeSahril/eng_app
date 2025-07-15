@@ -9,8 +9,7 @@ class ProfilPencapaianView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AchievementController());
-    final userId = 21; // Ganti dinamis sesuai user login
-    controller.loadAchievements(userId);
+    controller.loadAchievements();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F1B5),
@@ -66,7 +65,7 @@ class ProfilPencapaianView extends StatelessWidget {
                                   )
                                   : CachedNetworkImage(
                                     imageUrl:
-                                        "https://gg0l3mpr-5006.asse.devtunnels.ms/uploads/${a.gambar}",
+                                        "https://nngwj5fn-5006.asse.devtunnels.ms/static/uploads/${a.gambar}",
                                     width: 48,
                                     height: 48,
                                     fit: BoxFit.cover,
@@ -95,13 +94,25 @@ class ProfilPencapaianView extends StatelessWidget {
             const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  _buildInfoHeader("Informasi akun"),
-                  _buildInfoRow("Nama", user.name),
-                  // _buildInfoRow("Jenis kelamin", "-"),
-                  _buildInfoRow("Email", user.email),
-                ],
+              child: FutureBuilder<Map<String, String>>(
+                future: controller.getUserInfo(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError || !snapshot.hasData) {
+                    return const Text("Gagal memuat info pengguna.");
+                  }
+
+                  final userInfo = snapshot.data!;
+                  return Column(
+                    children: [
+                      _buildInfoHeader("Informasi akun"),
+                      _buildInfoRow("Nama", userInfo['name']!),
+                      _buildInfoRow("Email", userInfo['email']!),
+                    ],
+                  );
+                },
               ),
             ),
           ],

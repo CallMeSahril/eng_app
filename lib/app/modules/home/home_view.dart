@@ -1,4 +1,5 @@
 import 'package:eng_app/app/data/services/story_progress_service.dart';
+import 'package:eng_app/app/modules/dashboard/dashboard_controller.dart';
 import 'package:eng_app/app/modules/home/quiz_view.dart';
 import 'package:eng_app/app/modules/home/story_progress_controller.dart';
 import 'package:eng_app/main.dart';
@@ -79,13 +80,12 @@ class StoryProgressView extends StatelessWidget {
           );
           if (firstUnlockedIndex != -1) {
             scrollController.animateTo(
-              firstUnlockedIndex * MediaQuery.of(context).size.height,
+              firstUnlockedIndex * 600,
               duration: const Duration(milliseconds: 600),
               curve: Curves.easeInOut,
             );
           }
         });
-
         return ListView.builder(
           controller: scrollController,
           itemCount: controller.storyLevels.length,
@@ -93,13 +93,14 @@ class StoryProgressView extends StatelessWidget {
             final level = controller.storyLevels[levelIndex];
             final positions = generateFixedSteps();
 
-            return AspectRatio(
-              aspectRatio: 9 / 16,
+            return SizedBox(
+              width: 360, // FIXED WIDTH sesuai desain (misal: 392px)
+              height: 700, // FIXED HEIGHT sesuai desain posisi tile
               child: Stack(
                 children: [
                   Positioned.fill(
                     child: Image.network(
-                      'https://gg0l3mpr-5006.asse.devtunnels.ms/uploads/${level.backgroundImage}',
+                      'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${level.backgroundImage}',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -200,7 +201,7 @@ class _ClickableTileState extends State<_ClickableTile>
   //       shape: BoxShape.circle,
   //       image: DecorationImage(
   //         image: NetworkImage(
-  //           'https://gg0l3mpr-5006.asse.devtunnels.ms/uploads/${widget.image}',
+  //           'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${widget.image}',
   //         ),
   //         fit: BoxFit.cover,
   //       ),
@@ -235,7 +236,7 @@ class _ClickableTileState extends State<_ClickableTile>
           border: Border.all(color: Colors.green, width: 3),
           image: DecorationImage(
             image: NetworkImage(
-              'https://gg0l3mpr-5006.asse.devtunnels.ms/uploads/${widget.image}',
+              'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${widget.image}',
             ),
             fit: BoxFit.cover,
           ),
@@ -259,7 +260,7 @@ class _ClickableTileState extends State<_ClickableTile>
           border: Border.all(color: Colors.white, width: 2),
           image: DecorationImage(
             image: NetworkImage(
-              'https://gg0l3mpr-5006.asse.devtunnels.ms/uploads/${widget.image}',
+              'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${widget.image}',
             ),
             fit: BoxFit.cover,
           ),

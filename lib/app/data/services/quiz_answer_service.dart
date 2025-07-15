@@ -4,7 +4,7 @@ import 'package:eng_app/app/data/services/user_preference.dart';
 class QuizAnswerService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'https://gg0l3mpr-5006.asse.devtunnels.ms',
+      baseUrl: 'https://nngwj5fn-5006.asse.devtunnels.ms',
       headers: {'Accept': 'application/json'},
     ),
   );

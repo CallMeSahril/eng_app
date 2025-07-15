@@ -28,20 +28,19 @@ class Soal {
   });
 
   factory Soal.fromJson(Map<String, dynamic> json) {
-    final soal = json['soal'];
     return Soal(
-      id: soal['id'],
-      pertanyaan: soal['pertanyaan'],
-      pilihanA: soal['pilihan_a'],
-      pilihanB: soal['pilihan_b'],
-      pilihanC: soal['pilihan_c'],
-      pilihanD: soal['pilihan_d'],
-      gambar: soal['gambar'] ?? "",
-      gambarUrl: soal['gambar_url'],
-      gambarAUrl: soal['gambar_a_url'],
-      gambarBUrl: soal['gambar_b_url'],
-      gambarCUrl: soal['gambar_c_url'],
-      gambarDUrl: soal['gambar_d_url'],
+      id: json['id'],
+      pertanyaan: json['pertanyaan'],
+      pilihanA: json['pilihan_a'],
+      pilihanB: json['pilihan_b'],
+      pilihanC: json['pilihan_c'],
+      pilihanD: json['pilihan_d'],
+      gambar: json['gambar'] ?? "",
+      gambarUrl: json['gambar_url'] ?? "",
+      gambarAUrl: json['gambar_a_url'] ?? "",
+      gambarBUrl: json['gambar_b_url'] ?? "",
+      gambarCUrl: json['gambar_c_url'] ?? "",
+      gambarDUrl: json['gambar_d_url'] ?? "",
     );
   }
 }

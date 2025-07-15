@@ -27,6 +27,8 @@ class BabMateriView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.fetchMateri();
+
     return Scaffold(
       backgroundColor: const Color(0xffF9F1B5),
       body: Obx(() {

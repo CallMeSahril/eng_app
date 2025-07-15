@@ -10,7 +10,6 @@ class MateriController extends GetxController {
 
   @override
   void onInit() {
-    fetchMateri();
     super.onInit();
   }
 

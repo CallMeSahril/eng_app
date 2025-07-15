@@ -4,11 +4,10 @@ import 'dart:convert';
 import '../models/story_progress_model.dart';
 
 class StoryProgressService {
-  final String baseUrl = 'https://gg0l3mpr-5006.asse.devtunnels.ms/api/map';
+  final String baseUrl = 'https://nngwj5fn-5006.asse.devtunnels.ms/api/map';
 
   Future<List<StoryLevel>> fetchStoryProgress() async {
     final userId = await UserPreference.getUserId();
-    print('User ID: $userId');
 
     final response = await http.get(Uri.parse('$baseUrl?user_id=$userId'));
 
