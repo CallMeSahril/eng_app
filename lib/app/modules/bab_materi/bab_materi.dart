@@ -1,11 +1,15 @@
+import 'package:eng_app/app/data/services/story_progress_service.dart';
 import 'package:eng_app/app/modules/bab_materi/materi_controller.dart';
 import 'package:eng_app/app/modules/bab_materi/pdf_viewer_page.dart';
+import 'package:eng_app/app/modules/home/story_progress_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BabMateriView extends StatelessWidget {
   final MateriController controller = Get.find<MateriController>();
-
+  final StoryProgressController controllerA = StoryProgressController(
+    StoryProgressService(),
+  );
   BabMateriView({super.key});
 
   // Warna-warna sesuai dengan gambar yang kamu upload (urutan 5 warna)
@@ -46,7 +50,9 @@ class BabMateriView extends StatelessWidget {
             final textColor = textColorList[index % textColorList.length];
 
             return GestureDetector(
-              onTap: () {
+              onTap: () async {
+                print("Selected Materi: ${materi.judul}");
+                await controllerA.addLife(3);
                 Get.to(
                   () => PDFViewerPage(url: materi.pdfUrl, title: materi.judul),
                 );

@@ -5,7 +5,7 @@ import '../models/materi_model.dart';
 class MateriService {
   final Dio _dio = Dio();
   final String baseUrl =
-      'https://nngwj5fn-5006.asse.devtunnels.ms/materi-progress/';
+      'http://195.88.211.177:5006/materi-progress/';
 
   Future<List<MateriModel>> fetchMateri() async {
     print('Data materi berhasil dimuat: ${baseUrl} items');

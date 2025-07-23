@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eng_app/app/data/services/story_progress_service.dart';
 import 'package:eng_app/app/modules/audio/audio_controller.dart';
+import 'package:eng_app/app/modules/home/story_progress_controller.dart';
 import 'package:eng_app/app/modules/story_telling/story_controller.dart';
 import 'package:eng_app/app/modules/story_telling/video_player_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +9,15 @@ import 'package:get/get.dart';
 
 class StoryTellingView extends StatelessWidget {
   final StoryController controller = Get.put(StoryController());
+  final StoryProgressController controllerA = StoryProgressController(
+    StoryProgressService(),
+  );
 
   StoryTellingView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    controller.fetchStories(); // User ID bisa diubah
+    controller.fetchStories();
 
     return Scaffold(
       backgroundColor: const Color(0xffF9F1B5),
@@ -30,7 +35,8 @@ class StoryTellingView extends StatelessWidget {
               return GestureDetector(
                 onTap: () async {
                   final videoUrl = "assets/img/${story.videoUrl}";
-                  print("vidio url ${videoUrl}");
+                  print("Video URL: $videoUrl");
+                  await controllerA.addLife(3);
                   await AudioController.pause(); // kamu harus punya method pause()
 
                   Navigator.push(

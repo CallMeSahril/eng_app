@@ -92,7 +92,32 @@ class StoryProgressView extends StatelessWidget {
           itemBuilder: (context, levelIndex) {
             final level = controller.storyLevels[levelIndex];
             final positions = generateFixedSteps();
-
+            if (level.lives <= 0) {
+              // Pastikan hanya sekali tampil per level
+              if (level.lives <= 0) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Get.defaultDialog(
+                    title: "Out of Lives",
+                    middleText:
+                        "You have no more lives left.\nPlease read the material or watch the story to continue.",
+                    // textConfirm: "Go to Material",
+                    textCancel: "OK",
+                    confirmTextColor: Colors.white,
+                    // onConfirm: () {
+                    //   Get.back(); // tutup dialog
+                    //   // TODO: arahkan ke halaman materi
+                    //   Get.toNamed(
+                    //     '/material',
+                    //   ); // atau panggil Get.to(MaterialPage());
+                    // },
+                    onCancel: () {
+                      Get.back(); // tutup dialog
+                      // TODO: arahkan ke halaman storytelling
+                    },
+                  );
+                });
+              }
+            }
             return SizedBox(
               width: 360, // FIXED WIDTH sesuai desain (misal: 392px)
               height: 700, // FIXED HEIGHT sesuai desain posisi tile
@@ -100,7 +125,7 @@ class StoryProgressView extends StatelessWidget {
                 children: [
                   Positioned.fill(
                     child: Image.network(
-                      'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${level.backgroundImage}',
+                      'http://195.88.211.177:5006/uploads/${level.backgroundImage}',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -193,21 +218,6 @@ class _ClickableTileState extends State<_ClickableTile>
     );
   }
 
-  // Widget _buildTile() {
-  //   return Container(
-  //     height: 52,
-  //     width: 52,
-  //     decoration: BoxDecoration(
-  //       shape: BoxShape.circle,
-  //       image: DecorationImage(
-  //         image: NetworkImage(
-  //           'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${widget.image}',
-  //         ),
-  //         fit: BoxFit.cover,
-  //       ),
-  //     ),
-  //   );
-  // }
   Widget _buildTile() {
     if (widget.status == 'locked') {
       return Container(
@@ -236,7 +246,7 @@ class _ClickableTileState extends State<_ClickableTile>
           border: Border.all(color: Colors.green, width: 3),
           image: DecorationImage(
             image: NetworkImage(
-              'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${widget.image}',
+              'http://195.88.211.177:5006/uploads/${widget.image}',
             ),
             fit: BoxFit.cover,
           ),
@@ -260,7 +270,7 @@ class _ClickableTileState extends State<_ClickableTile>
           border: Border.all(color: Colors.white, width: 2),
           image: DecorationImage(
             image: NetworkImage(
-              'https://nngwj5fn-5006.asse.devtunnels.ms/uploads/${widget.image}',
+              'http://195.88.211.177:5006/uploads/${widget.image}',
             ),
             fit: BoxFit.cover,
           ),

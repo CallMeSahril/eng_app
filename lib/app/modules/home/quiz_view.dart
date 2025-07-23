@@ -86,7 +86,7 @@ class QuizPage extends StatelessWidget {
             if (soal == null) {
               return const Center(child: Text('Soal tidak tersedia'));
             }
-
+            print("soal gambar: ${soal.gambarUrl}");
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

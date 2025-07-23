@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../models/story_model.dart';
 
 class StoryService {
-  final String baseUrl = 'https://nngwj5fn-5006.asse.devtunnels.ms/api';
+  final String baseUrl = 'http://195.88.211.177:5006/api';
 
   Future<List<Story>> getStoryProgressByUser() async {
     final userId = await UserPreference.getUserId();

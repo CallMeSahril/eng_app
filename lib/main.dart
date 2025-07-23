@@ -11,7 +11,7 @@ void main() async {
   final dio = Dio();
   try {
     final response = await dio.get(
-      'https://nngwj5fn-5006.asse.devtunnels.ms/api/musik/',
+      'http://195.88.211.177:5006/api/musik/',
     );
     if (response.statusCode == 200 && response.data.isNotEmpty) {
       final firstMusic = response.data[0]['nama']; // Gunakan musik pertama

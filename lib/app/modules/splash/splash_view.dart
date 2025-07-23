@@ -16,6 +16,7 @@ class SplashView extends StatelessWidget {
     await Future.delayed(Duration(seconds: 2));
 
     if (userId == null) {
+      
       Get.offAll(() => StartView());
     } else {
       Get.offAll(() => DashboardView());

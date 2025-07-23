@@ -51,7 +51,7 @@ class _PengaturanViewState extends State<PengaturanView> {
 
   Future<void> fetchMusik() async {
     final response = await Dio().get(
-      'https://nngwj5fn-5006.asse.devtunnels.ms/api/musik',
+      'http://195.88.211.177:5006/api/musik',
     );
     setState(() {
       musikList = response.data;

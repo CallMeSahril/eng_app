@@ -65,7 +65,7 @@ class ProfilPencapaianView extends StatelessWidget {
                                   )
                                   : CachedNetworkImage(
                                     imageUrl:
-                                        "https://nngwj5fn-5006.asse.devtunnels.ms/static/uploads/${a.gambar}",
+                                        "http://195.88.211.177:5006/static/uploads/${a.gambar}",
                                     width: 48,
                                     height: 48,
                                     fit: BoxFit.cover,

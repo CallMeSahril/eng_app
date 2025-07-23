@@ -22,7 +22,7 @@ class MateriModel {
   });
 
   factory MateriModel.fromJson(Map<String, dynamic> json) {
-    String baseUrl = 'https://nngwj5fn-5006.asse.devtunnels.ms/uploads';
+    String baseUrl = 'http://195.88.211.177:5006/uploads';
     String filename = json['filename'];
     return MateriModel(
       id: json['id'],

@@ -32,12 +32,14 @@ class StoryLevel {
   final String name;
   final String theme;
   final String backgroundImage;
+  final int lives;
   final List<Tile> tiles;
 
   StoryLevel({
     required this.id,
     required this.name,
     required this.theme,
+    required this.lives,
     required this.backgroundImage,
     required this.tiles,
   });
@@ -46,6 +48,7 @@ class StoryLevel {
     id: json['id'],
     name: json['name'],
     theme: json['theme'],
+    lives: json['lives'],
     backgroundImage: json['background_image'],
     tiles: (json['tiles'] as List).map((e) => Tile.fromJson(e)).toList(),
   );
