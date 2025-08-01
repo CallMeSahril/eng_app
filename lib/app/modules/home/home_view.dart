@@ -118,36 +118,101 @@ class StoryProgressView extends StatelessWidget {
                 });
               }
             }
-            return SizedBox(
-              width: 360, // FIXED WIDTH sesuai desain (misal: 392px)
-              height: 700, // FIXED HEIGHT sesuai desain posisi tile
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.network(
-                      'http://195.88.211.177:5006/uploads/${level.backgroundImage}',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  ...List.generate(positions.length, (index) {
-                    return _ClickableTile(
-                      status: level.tiles[index].status,
-                      image: level.tiles[index].icon,
-                      position: positions[index],
-                      index: index + 1,
-                      onTap: () {
-                        if (level.tiles[index].status == 'unlocked') {
-                          Get.to(
-                            () => QuizPage(
-                              levelId: level.tiles[index].levelId,
-                              tileId: level.tiles[index].id,
+            // return SizedBox(
+            //   width: 360, // FIXED WIDTH sesuai desain (misal: 392px)
+            //   height: 700, // FIXED HEIGHT sesuai desain posisi tile
+            //   child: Stack(
+            //     children: [
+            //       Align(
+            //         alignment:
+            //             Alignment
+            //                 .centerLeft, // atau Alignment.center, sesuai kebutuhan
+            //         child: Container(
+            //           width: 390,
+            //           height: 700,
+            //           decoration: BoxDecoration(
+            //             image: DecorationImage(
+            //               fit: BoxFit.cover,
+            //               image: NetworkImage(
+            //                 'http://195.88.211.177:5006/uploads/${level.backgroundImage}',
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+
+            //       ...List.generate(positions.length, (index) {
+            //         return _ClickableTile(
+            //           status: level.tiles[index].status,
+            //           image: level.tiles[index].icon,
+            //           position: positions[index],
+            //           index: index + 1,
+            //           onTap: () {
+            //             if (level.tiles[index].status == 'unlocked') {
+            //               Get.to(
+            //                 () => QuizPage(
+            //                   levelId: level.tiles[index].levelId,
+            //                   tileId: level.tiles[index].id,
+            //                 ),
+            //               );
+            //             }
+            //           },
+            //         );
+            //       }),
+            //     ],
+            //   ),
+            // );
+            return Container(
+              width: double.infinity, // ambil seluruh lebar layar
+              color:
+                  levelIndex == 0
+                      ? Color(0xffDFF9AE)
+                      : levelIndex == 1
+                      ? Color(0xffFFEBEC)
+                      : levelIndex == 3
+                      ? const Color(0xffE5E8EB)
+                      : levelIndex == 4
+                      ? Color(0xffF5F5F5)
+                      : Colors.transparent, // atau warna background yang cocok
+              child: Center(
+                child: SizedBox(
+                  width: 390,
+                  height: 700,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                'http://195.88.211.177:5006/uploads/${level.backgroundImage}',
+                              ),
                             ),
-                          );
-                        }
-                      },
-                    );
-                  }),
-                ],
+                          ),
+                        ),
+                      ),
+                      ...List.generate(positions.length, (index) {
+                        return _ClickableTile(
+                          status: level.tiles[index].status,
+                          image: level.tiles[index].icon,
+                          position: positions[index],
+                          index: index + 1,
+                          onTap: () {
+                            if (level.tiles[index].status == 'unlocked') {
+                              Get.to(
+                                () => QuizPage(
+                                  levelId: level.tiles[index].levelId,
+                                  tileId: level.tiles[index].id,
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      }),
+                    ],
+                  ),
+                ),
               ),
             );
           },

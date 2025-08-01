@@ -50,9 +50,7 @@ class _PengaturanViewState extends State<PengaturanView> {
   }
 
   Future<void> fetchMusik() async {
-    final response = await Dio().get(
-      'http://195.88.211.177:5006/api/musik',
-    );
+    final response = await Dio().get('http://195.88.211.177:5006/api/musik');
     setState(() {
       musikList = response.data;
     });
@@ -74,41 +72,185 @@ class _PengaturanViewState extends State<PengaturanView> {
     await AudioController.playLoop(musik); // Ganti musik yang diputar
   }
 
+  Future<void> deleteAccount() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('user_id');
+
+    if (userId == null) {
+      Get.snackbar("Gagal", "User ID tidak ditemukan di penyimpanan lokal");
+      return;
+    }
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text("Hapus Akun"),
+            content: const Text(
+              "Apakah kamu yakin ingin menghapus akun ini secara permanen? Tindakan ini tidak dapat dibatalkan.",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Batal"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text(
+                  "Ya, Hapus",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm != true) return;
+
+    try {
+      final response = await Dio().delete(
+        "http://195.88.211.177:5006/auth/delete/$userId",
+      );
+
+      if (response.statusCode == 200) {
+        await prefs.clear();
+        authController.logout(); // panggil logout
+        Get.offAllNamed(
+          '/login',
+        ); // arahkan ke login page (ubah sesuai routing kamu)
+        Get.snackbar(
+          "Berhasil",
+          "Akun berhasil dihapus secara permanen",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } else {
+        Get.snackbar(
+          "Gagal",
+          response.data['message'] ?? "Gagal menghapus akun",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Terjadi kesalahan koneksi saat menghapus akun",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      print("Delete error: $e");
+    }
+  }
+
+  Future<void> changePassword() async {
+    final oldController = TextEditingController();
+    final newController = TextEditingController();
+    final confirmController = TextEditingController();
+
+    final formKey = GlobalKey<FormState>();
+
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text("Ganti Password"),
+          content: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: oldController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Password Lama",
+                    ),
+                    validator: (val) => val!.isEmpty ? "Wajib diisi" : null,
+                  ),
+                  TextFormField(
+                    controller: newController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Password Baru",
+                    ),
+                    validator:
+                        (val) => val!.length < 6 ? "Minimal 6 karakter" : null,
+                  ),
+                  TextFormField(
+                    controller: confirmController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Konfirmasi Password",
+                    ),
+                    validator:
+                        (val) =>
+                            val != newController.text ? "Tidak cocok" : null,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(onPressed: () => Get.back(), child: const Text("Batal")),
+            ElevatedButton(
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  final prefs = await SharedPreferences.getInstance();
+                  final userId = prefs.getInt('user_id');
+                  if (userId == null) {
+                    Get.snackbar("Error", "User tidak ditemukan");
+                    return;
+                  }
+
+                  try {
+                    final response = await Dio().put(
+                      "http://195.88.211.177:5006/auth/change-password/$userId",
+                      data: {
+                        "old_password": oldController.text.trim(),
+                        "new_password": newController.text.trim(),
+                        "confirm_password": confirmController.text.trim(),
+                      },
+                    );
+
+                    if (response.statusCode == 200) {
+                      Get.back();
+                      Get.snackbar(
+                        "Berhasil",
+                        response.data['message'],
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else {
+                      Get.snackbar(
+                        "Gagal",
+                        response.data['message'] ?? "Gagal mengganti password",
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    }
+                  } catch (e) {
+                    Get.snackbar(
+                      "Error",
+                      "Terjadi kesalahan koneksi",
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                    print("Change password error: $e");
+                  }
+                }
+              },
+              child: const Text("Ganti"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF9F1B5),
       body: ListView(
         children: [
-          _sectionTitle("Pengaturan"),
-          ListTile(
-            title: const Text("Matikan Musik"),
-            trailing: Switch(
-              value: isMuted,
-              onChanged: (value) => saveMuteStatus(value),
-              activeColor: Colors.redAccent,
-            ),
-          ),
-          ListTile(
-            title: const Text("Musik Latar"),
-            subtitle:
-                musikList.isEmpty
-                    ? const Text("Memuat...")
-                    : DropdownButton<String>(
-                      isExpanded: true,
-                      value: selectedMusik,
-                      items:
-                          musikList.map<DropdownMenuItem<String>>((musik) {
-                            return DropdownMenuItem<String>(
-                              value: 'img/${musik['nama']}',
-                              child: Text(musik['nama']),
-                            );
-                          }).toList(),
-                      onChanged: (value) {
-                        if (value != null) saveSelectedMusik(value);
-                      },
-                    ),
-          ),
+          _sectionTitle("Akun"),
+
           ListTile(
             title: const Text("Profil dan Pencapain "),
             trailing: const Icon(
@@ -117,6 +259,15 @@ class _PengaturanViewState extends State<PengaturanView> {
             ),
             onTap: () => Get.to(ProfilPencapaianView()),
           ),
+          ListTile(
+            title: const Text("Ganti Password"),
+            trailing: const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.black54,
+            ),
+            onTap: changePassword,
+          ),
+
           // ListTile(
           //   title: const Text("Ubah Password "),
           //   trailing: const Icon(
@@ -125,6 +276,15 @@ class _PengaturanViewState extends State<PengaturanView> {
           //   ),
           //   onTap: () {},
           // ),
+          ListTile(
+            title: const Text("Hapus Akun"),
+            trailing: const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.black54,
+            ),
+            onTap: deleteAccount,
+          ),
+
           ListTile(
             title: const Text("Keluar Akun"),
             trailing: const Icon(
@@ -166,6 +326,37 @@ class _PengaturanViewState extends State<PengaturanView> {
           //   ),
           //   onTap: () {},
           // ),
+          _sectionTitle("Preference"),
+          ListTile(
+            title: const Text("Matikan Musik"),
+            trailing: Switch(
+              value: isMuted,
+              onChanged: (value) => saveMuteStatus(value),
+              activeColor: Colors.redAccent,
+            ),
+          ),
+          ListTile(
+            title: const Text("Musik Latar"),
+            subtitle:
+                musikList.isEmpty
+                    ? const Text("Memuat...")
+                    : DropdownButton<String>(
+                      isExpanded: true,
+                      value:
+                          selectedMusik ??
+                          (musikList.isNotEmpty
+                              ? 'img/${musikList[0]['nama']}'
+                              : null),
+                      items:
+                          musikList.map<DropdownMenuItem<String>>((musik) {
+                            return DropdownMenuItem<String>(
+                              value: 'img/${musik['nama']}',
+                              child: Text(musik['nama']),
+                            );
+                          }).toList(),
+                      onChanged: null, // Disable editing
+                    ),
+          ),
           GestureDetector(
             child: _sectionTitle("Pusat bantuan"),
             onTap: () => Get.to(const PusatBantuanView()),

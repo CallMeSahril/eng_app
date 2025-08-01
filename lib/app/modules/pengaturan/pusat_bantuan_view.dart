@@ -37,12 +37,12 @@ class PusatBantuanView extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.email),
               title: const Text("Email Bantuan"),
-              subtitle: const Text("support@engapp.com"),
+              subtitle: const Text("bearadventure15@gmail.com"),
             ),
             ListTile(
               leading: const Icon(Icons.phone),
               title: const Text("No. WhatsApp"),
-              subtitle: const Text("+62 812-3456-7890"),
+              subtitle: const Text("+62 851-2975-0343"),
             ),
           ]),
         ],
