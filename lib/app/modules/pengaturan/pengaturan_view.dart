@@ -109,7 +109,7 @@ class _PengaturanViewState extends State<PengaturanView> {
 
     try {
       final response = await Dio().delete(
-        "http://195.88.211.177:5006/auth/delete/$userId",
+        "http://195.88.211.177:5006/api/auth/delete/$userId",
       );
 
       if (response.statusCode == 200) {
@@ -203,7 +203,7 @@ class _PengaturanViewState extends State<PengaturanView> {
 
                   try {
                     final response = await Dio().put(
-                      "http://195.88.211.177:5006/auth/change-password/$userId",
+                      "http://195.88.211.177:5006/api/auth/change-password/$userId",
                       data: {
                         "old_password": oldController.text.trim(),
                         "new_password": newController.text.trim(),
